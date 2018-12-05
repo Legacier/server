@@ -12,13 +12,12 @@ branches:
   only:
     - master
 # send notifications to stack as well as email
-notifications:
-  slack: getmangos:yRgNBSgRQVh8WdfGEbT08Hit
+# notifications:
+#   slack: getmangos:yRgNBSgRQVh8WdfGEbT08Hit
 
 # build on both Linux and OSX
 os:
   - linux
-  - osx
 
 # build with both gcc and clang to ensure compatibility
 compiler:
@@ -30,17 +29,17 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.8
-      - g++-4.8
+      - gcc
+      - g++
       - clang
 
 before_install:
   - bash .travis.sh
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CC" = "gcc" ] ; then export CC=gcc-4.8 CXX=g++-4.8 ; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CC" = "gcc" ] ; then export CC=gcc CXX=g++ ; fi
 
 script:
   - test -d _build || mkdir _build
   - test -d _install || mkdir _install
   - cd _build
   - cmake .. -DCMAKE_INSTALL_PREFIX=../_install -DSOAP=1 -DPLAYERBOTS=1
-  - make -j4
+  - make
